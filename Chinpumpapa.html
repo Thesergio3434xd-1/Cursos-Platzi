@@ -5,20 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Piedra, papel o tijeras</title>
     <script>
-        
+        let victoriasJugador = 0;
+        let victoriasPC = 0;
+
         function obtenerEleccionJugador() {
-            let jugardor = prompt("Elige una opción: 1. Piedra, 2. Papel, 3. Tijeras");
-            if (jugardor == 1) {
-            alert("El jugador elige ✊");
-            } else if (jugardor == 2) {
-            alert("El jugador elige ✋");
-            } else if (jugardor == 3) {
-            alert("El jugador elige ✌️");
+            let jugador = prompt("Elige una opción: 1. Piedra, 2. Papel, 3. Tijeras");
+            if (jugador == 1) {
+                alert("El jugador elige ✊");
+            } else if (jugador == 2) {
+                alert("El jugador elige ✋");
+            } else if (jugador == 3) {
+                alert("El jugador elige ✌️");
             } else {
-            alert("Opción no válida");
-            return obtenerEleccionJugador();
+                alert("Opción no válida");
+                return obtenerEleccionJugador();
             }
-            return jugardor;
+            return jugador;
         }
 
         function obtenerEleccionPC() {
@@ -26,36 +28,44 @@
             let max = 3;
             let pc = Math.floor(Math.random() * (max - min + 1) + min);
             if (pc == 1) {
-            alert("La 🤖 elige ✊");
+                alert("La 🤖 elige ✊");
             } else if (pc == 2) {
-            alert("La 🤖 elige ✋");
+                alert("La 🤖 elige ✋");
             } else if (pc == 3) {
-            alert("La 🤖 elige ✌️");
+                alert("La 🤖 elige ✌️");
             }
             return pc;
         }
 
-        function determinarGanador(jugardor, pc) {
-            if (jugardor == pc) {
-            alert("Es un empate");
-            } else if ((jugardor == 1 && pc == 3) || (jugardor == 2 && pc == 1) || (jugardor == 3 && pc == 2)) {
-            alert("¡El jugador gana!");
+        function determinarGanador(jugador, pc) {
+            if (jugador == pc) {
+                alert("Es un empate");
+            } else if ((jugador == 1 && pc == 3) || (jugador == 2 && pc == 1) || (jugador == 3 && pc == 2)) {
+                alert("¡El jugador gana!");
+                victoriasJugador++;
             } else {
-            alert("La 🤖 gana");
-            }
-        }
-
-        function volverAJugar() {
-            if (confirm("¿Quieres volver a jugar?")) {
-            location.reload();
+                alert("La 🤖 gana");
+                victoriasPC++;
             }
         }
 
         function jugar() {
-            let jugardor = obtenerEleccionJugador();
-            let pc = obtenerEleccionPC();
-            determinarGanador(jugardor, pc);
-            volverAJugar();
+            while (victoriasJugador < 3 && victoriasPC < 3) {
+                let jugador = obtenerEleccionJugador();
+                let pc = obtenerEleccionPC();
+                determinarGanador(jugador, pc);
+                alert(`Marcador: Jugador ${victoriasJugador} - 🤖 ${victoriasPC}`);
+            }
+
+            if (victoriasJugador == 3) {
+                alert("¡El jugador gana la serie!");
+            } else {
+                alert("La 🤖 gana la serie");
+            }
+
+            if (confirm("¿Quieres volver a jugar?")) {
+                location.reload();
+            }
         }
 
         jugar();

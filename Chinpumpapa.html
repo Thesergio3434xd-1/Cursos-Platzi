@@ -3,9 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Piedra, papel o tijeras</title>
+    <script>
+        // 1 es piedra, 2 es papel, 3 es tijeras
+        let jugardor = 0;
+        let pc = 2;
+        jugardor = prompt("Elige una opción: 1. Piedra, 2. Papel, 3. Tijeras");
+        // Mostrar elección del jugador
+        if (jugardor == 1) {
+            alert("El jugador elige ✊");
+        } else if (jugardor == 2) {
+            alert("El jugador elige ✋");
+        } else if (jugardor == 3) {
+            alert("El jugador elige ✌️");
+        } else {
+            alert("Opción no válida");
+        }
+
+        // Mostrar elección de la PC
+        if (pc == 1) {
+            alert("La 🤖 elige ✊");
+        } else if (pc == 2) {
+            alert("La 🤖 elige ✋");
+        } else if (pc == 3) {
+            alert("La 🤖 elige ✌️");
+        }
+
+        // Enfrentamiento
+        if (jugardor == pc) {
+            alert("Es un empate");
+        } else if ((jugardor == 1 && pc == 3) || (jugardor == 2 && pc == 1) || (jugardor == 3 && pc == 2)) {
+            alert("¡El jugador gana!");
+        } else {
+            alert("La 🤖 gana");
+        }
+
+        // Volver a jugar
+        function volverAJugar() {
+            location.reload();
+        }
+
+        if (confirm("¿Quieres volver a jugar?")) {
+            volverAJugar();
+        }
+    </script>
 </head>
 <body>
-    
+     <h1>Piedra, Papel o tijeras</h1>
 </body>
 </html>

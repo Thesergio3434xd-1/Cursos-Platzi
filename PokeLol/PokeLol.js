@@ -1,5 +1,7 @@
 let AtackPlayer 
 let AtackRival
+let vidaPlayer =3
+let vidaRival = 3
 
 function inciarjuegoPuchamon() {
   let botonPuchamonPlayer = document.getElementById("BotonPuchamon");
@@ -75,17 +77,26 @@ function AtackRandomEnemigo(){
 }
 
 function batalla(){
-
+    let SpamvidaJugador = document.getElementById("VidaPlayer")
+    let SpamvidaRival = document.getElementById("VidaRival")
     if (AtackRival == AtackPlayer) {
         mensaje(" EMPATE ");
     } else if (AtackPlayer == 'Fuego' && AtackRival == 'Planta') {
         mensaje(" GANASTE ");
+        vidaRival--
+        SpamvidaRival.innerHTML = vidaRival
     } else if (AtackPlayer == 'Agua' && AtackRival == 'Fuego') {
         mensaje(" GANASTE ");
+        vidaRival--
+        SpamvidaRival.innerHTML = vidaRival
     } else if (AtackPlayer == 'Planta' && AtackRival == 'Agua') {
         mensaje(" GANASTE ");
+        vidaRival--
+        SpamvidaRival.innerHTML = vidaRival
     } else {
         mensaje(" PERDISTE ");
+        vidaPlayer--
+        SpamvidaJugador.innerHTML = vidaPlayer
     }
 
 }

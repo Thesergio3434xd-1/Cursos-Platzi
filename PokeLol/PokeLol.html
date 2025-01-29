@@ -1,34 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PuchaMon</title>
-</head>
-<body>
+    <script src="PokeLol.js"></script>
+  </head>
+  <body>
     <h1>PuchaMon. 🔥💦☘️</h1>
     <section id="Select_PuchaMon">
-        <h2>Selecciona tu PuchaMon</h2>
-        <button>Seleccionar</button>
-            <button>Charmander 🔥</button>
-            <button>Squirtle 💦</button>
-            <button>Bulbasaur ☘️</button>
+      <h2>Selecciona tu PuchaMon</h2>
+
+      <label for="Charmander">Charmander</label>
+      <input type="radio" name="PuchaMon" id="Charmander" />
+      <label for="Squirtle">Squirtle</label>
+      <input type="radio" name="PuchaMon" id="Squirtle" />
+      <label for="Bulbasaur">Bulbasaur</label>
+      <input type="radio" name="PuchaMon" id="Bulbasaur" />
+
+      <button id="BotonPuchamon">Seleccionar</button>
     </section>
 
     <section id="Select_atack">
-        <h2>Selecciona tu ataque</h2>
+      <h2>Selecciona tu ataque</h2>
 
-        <p>Tu mascota tiene <span>3</span> vidas</p>
-        <p>Tu enemigo tiene <span>3</span> vidas</p>
-        <p>
-            <button>Fuego 🔥</button>
-            <button>Agua 💦</button>
-            <button>Planta ☘️</button>
-        </p>
+      <p>Tu mascota <span id="mascota-jugador"></span> tiene <span>3</span> vidas</p>
+      <p><span id="mascota-enemigo"></span> de tu enemigo tiene <span>3</span> vidas</p>
+      <p>
+        <button id="Ataque_fuego">Fuego 🔥</button>
+        <button id="Ataque_agua">Agua 💦</button>
+        <button id="Ataque_planta">Planta ☘️</button>
+      </p>
     </section>
 
-    <section id="Resultado">
-        <h2>Resultado</h2>
-        <p>El resultado es: <span>Empate</span></p>
-</body>
+    <section id="Mensaje_Resultado">
+
+    </section>
+    <section id="reiniciar">
+      <button id ="Boton_reiniciar">Reiniciar</button>
+    </section>
+  </body>
 </html>

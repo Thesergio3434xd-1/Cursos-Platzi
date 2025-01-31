@@ -4,4 +4,75 @@
     color: #ff4800;
     text-align: center;
     margin-top: 20px;
+    border: 2px solid #ff4800;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.subtitulo{
+    font-size: 30px;
+    font-weight: bold;
+    color: #ff4800;
+    text-align: center;
+    margin-top: 20px;
+    border: 2px solid #ff4800;
+    padding: 10px;
+    border-radius: 10px;
+
+}
+input {
+    display: none;
+}
+
+#BotonPuchamon {
+    background-color: #f7936c;
+    color: white;
+    border: 2px solid #f7936c;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+#Select_PuchaMon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #ff4800;
+    padding: 20px;
+    border-radius: 10px;
+}
+.tarjeta{
+    display: flex;
+    gap: 10px;
+}
+
+.tarjeta-puchamon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ff4800;
+    color: white;
+    width: 200px;
+    height: 200px;
+    border: 2px solid #ff4800;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.tarjeta-puchamon img {
+    width: 100px;
+    height: 100px;
 }

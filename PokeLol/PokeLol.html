@@ -12,6 +12,7 @@
       <h1 id="Titulo">PuchaMon. 🔥💦☘️</h1>
       <h2 class="subtitulo">Selecciona tu PuchaMon</h2>
       <div class="tarjeta">
+        <input type="radio" name="PuchaMon" id="Charmander" />
         <label class="tarjeta-puchamon" for="Charmander">
           <p>Charmander</p>
           <img
@@ -19,7 +20,7 @@
             alt="Charmander"
           />
         </label>
-        <input type="radio" name="PuchaMon" id="Charmander" />
+        <input type="radio" name="PuchaMon" id="Squirtle" />
         <label class="tarjeta-puchamon" for="Squirtle"
           ><p>Squirtle</p>
           <img
@@ -27,7 +28,7 @@
             alt="Squirtle"
           />
         </label>
-        <input type="radio" name="PuchaMon" id="Squirtle" />
+        <input type="radio" name="PuchaMon" id="Bulbasaur" />
         <label class="tarjeta-puchamon" for="Bulbasaur"
           ><p>Bulbasaur</p>
           <img
@@ -35,7 +36,7 @@
             alt="Bulbasaur"
           />
         </label>
-        <input type="radio" name="PuchaMon" id="Bulbasaur" />
+        
       </div>
       <button id="BotonPuchamon">Seleccionar</button>
     </section>
@@ -44,26 +45,46 @@
       <h1 id="Titulo">PuchaMon. 🔥💦☘️</h1>
       <h2 class="subtitulo">Selecciona tu ataque</h2>
 
-      <div>
-        <button id="Ataque_fuego">Fuego 🔥</button>
-        <button id="Ataque_agua">Agua 💦</button>
-        <button id="Ataque_planta">Planta ☘️</button>
+      <div class="">
+        <button id="Ataque_fuego" class="boton-ataque">Fuego 🔥</button>
+        <button id="Ataque_agua" class="boton-ataque">Agua 💦</button>
+        <button id="Ataque_planta" class="boton-ataque">Planta ☘️</button>
       </div>
       <div>
-        <section id="Mensaje_Resultado"></section>
+        <section id="Mensaje_Resultado">
+          <p id="Resultado1">Suerte con tus puchamones</p>
+        </section>
+
         <section id="reiniciar">
           <button id="Boton_reiniciar">Reiniciar</button>
         </section>
       </div>
-      <div>
-        <p>
-          Tu mascota <span id="mascota-jugador"></span> tiene
-          <span id="VidaPlayer">3</span> vidas
-        </p>
-        <p>
-          <span id="mascota-enemigo"></span> de tu enemigo tiene
-          <span id="VidaRival">3</span> vidas
-        </p>
+      <div class="contenedor-vida">
+        <div class="ataquejugador">
+          <p>
+            Tu mascota tiene
+          </p><p id="VidaPlayer">3</p><p>
+            vidas
+         </p>
+          <p id="mascota-jugador"></p>
+          <div id="Resultado-ataqueP"></div>
+          
+        </div>
+
+        <div class="atauqeenemy">
+          <p>
+             El puchamon de tu enemigo tiene
+          </p>
+          <p id="VidaRival">3 </p><p>
+            vidas
+         </p>
+          <p id="mascota-enemigo"></p>
+          <div id="Resultado-ataqueE"></div>
+          <p>
+             de tu enemigo tiene
+             vidas
+          </p>
+        </div>
       </div>
     </section>
   </body>

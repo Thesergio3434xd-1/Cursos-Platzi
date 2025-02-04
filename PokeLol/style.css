@@ -1,78 +1,184 @@
 #Titulo {
-    font-size: 50px;
-    font-weight: bold;
-    color: #ff4800;
-    text-align: center;
-    margin-top: 20px;
-    border: 2px solid #ff4800;
-    padding: 10px;
-    border-radius: 10px;
+  font-size: 50px;
+  font-weight: bold;
+  color: #ff4800;
+  text-align: center;
+  margin-top: 20px;
+  border: 2px solid #ff4800;
+  padding: 10px;
+  border-radius: 10px;
 }
 
-.subtitulo{
-    font-size: 30px;
-    font-weight: bold;
-    color: #ff4800;
-    text-align: center;
-    margin-top: 20px;
-    border: 2px solid #ff4800;
-    padding: 10px;
-    border-radius: 10px;
-
+.subtitulo {
+  font-size: 30px;
+  font-weight: bold;
+  color: #ff4800;
+  text-align: center;
+  margin-top: 20px;
+  border: 2px solid #ff4800;
+  padding: 10px;
+  border-radius: 10px;
 }
 input {
-    display: none;
+  display: none;
+}
+
+input:checked + label{
+  background-color: #f7936c;
 }
 
 #BotonPuchamon {
-    background-color: #f7936c;
-    color: white;
-    border: 2px solid #f7936c;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    width: 150px;
-    height: 50px;
-    border-radius: 5px;
+  background-color: #f7936c;
+  color: white;
+  border: 2px solid #f7936c;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
 }
 
 #Select_PuchaMon {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid #ff4800;
-    padding: 20px;
-    border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #ff4800;
+  padding: 20px;
+  border-radius: 10px;
 }
-.tarjeta{
-    display: flex;
-    gap: 10px;
+.tarjeta,
+.contenedor-ataques {
+  display: flex;
+  gap: 10px;
 }
 
 .tarjeta-puchamon {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #ff4800;
-    color: white;
-    width: 200px;
-    height: 200px;
-    border: 2px solid #ff4800;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px;
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ff4800;
+  color: white;
+  width: 200px;
+  height: 200px;
+  border: 2px solid #ff4800;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .tarjeta-puchamon img {
+  width: 100px;
+  height: 100px;
+}
+
+#Select_atack {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #ff4800;
+  padding: 20px;
+  border-radius: 10px;
+}
+.boton-ataque {
+  background-color: #f7936c;
+  color: white;
+  border: 2px solid #ff4800;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 150px;
+  height: 50px;
+  font-family: "poppins", sans-serif;
+}
+
+#Mensaje_Resultado {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff4800;
+  text-align: center;
+  margin-top: 20px;
+  border: 2px solid #ff4800;
+  padding: 10px;
+  border-radius: 10px;
+  flex-direction: column;
+  align-items: center;
+}
+
+#Boton_reiniciar {
+  background-color: #f7936c;
+  color: white;
+  border: 2px solid #f7936c;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
+  font-family: "poppins", sans-serif;
+}
+.contenedor-vida {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  gap: 150px;
+}
+
+.ataquejugador,
+.ataqueenemy {
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+}
+@media (max-width: 360px) {
+  .tarjeta-puchamon {
+    width: 150px;
+    height: 150px;
+    font-size: 14px;
+    gap: 5px;
+    padding: 5px;
+    margin: 5px;
+  }
+  .tarjeta-puchamon img {
     width: 100px;
     height: 100px;
+  }
+  .tarjeta-puchamon {
+    width: 150px;
+    height: 150px;
+    font-size: 14px;
+    gap: 5px;
+    padding: 5px;
+    margin: 5px;
+  }
+  .contenedor-ataques {
+    width: 150px;
+    height: 150px;
+    font-size: 14px;
+    gap: 5px;
+    padding: 5px;
+    margin: 5px;
+  }
 }

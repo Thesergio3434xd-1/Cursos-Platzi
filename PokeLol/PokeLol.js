@@ -25,10 +25,10 @@ function inciarjuegoPuchamon() {
 
 function SeleccionarPuchamonPlayer() {
   let sectionSelectpuchamon = document.getElementById("Select_PuchaMon");
-  sectionSelectpuchamon.style.display = "none"
+  sectionSelectpuchamon.style.display = "none";
 
-  let sectionSelect_atack = document.getElementById("Select_atack")
-  sectionSelect_atack.style.display = "block"
+  let sectionSelect_atack = document.getElementById("Select_atack");
+  sectionSelect_atack.style.display = "flex";
 
   let inputCharmander = document.getElementById("Charmander");
   let inputBulbasaur = document.getElementById("Bulbasaur");
@@ -121,29 +121,27 @@ function Revisarvida() {
   }
 }
 function mensaje(resultado) {
-  let sectionResultado = document.getElementById("Mensaje_Resultado");
+  let sectionResultado = document.getElementById("Resultado1");
+  let ataquejugador = document.getElementById("Resultado-ataqueP");
+  let ataqueenemigo = document.getElementById("Resultado-ataqueE");
 
-  let SpamResultado = document.createElement("p");
-  SpamResultado.innerHTML =
-    "Tu mascota uso el ataque " +
-    AtackPlayer +
-    " y tu enemigo contraataca con " +
-    AtackRival +
-    resultado;
+  let nuevoataqueJ = document.createElement("p");
+  let nuevoataqueE = document.createElement("p");
 
-  sectionResultado.appendChild(SpamResultado);
+  sectionResultado.innerHTML = resultado;
+  nuevoataqueJ.innerHTML = "Atacaste con tipo: " + AtackPlayer;
+  nuevoataqueE.innerHTML = "El enemigo contraataca con tipo: " + AtackRival;
+
+  ataquejugador.appendChild(nuevoataqueJ);
+  ataqueenemigo.appendChild(nuevoataqueE);
 }
 
 function mensajeFinal(resultadoFinal) {
-
   let sectionreiniciar = document.getElementById("reiniciar");
   sectionreiniciar.style.display = "block";
-  let sectionResultado = document.getElementById("Mensaje_Resultado");
 
-  let SpamResultado = document.createElement("p");
-  SpamResultado.innerHTML = resultadoFinal;
-
-  sectionResultado.appendChild(SpamResultado);
+  let sectionResultado = document.getElementById("Resultado1");
+  sectionResultado.innerHTML = resultadoFinal;
 
   let botonfuego = document.getElementById("Ataque_fuego");
   botonfuego.disabled = true;

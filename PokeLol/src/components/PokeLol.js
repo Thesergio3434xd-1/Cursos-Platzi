@@ -13,7 +13,8 @@ const ESTADO_JUEGO = {
     ataques: []
   },
   salaId: null,
-  turnoActual: null
+  turnoActual: null,
+  miTurno: false
 };
 
 // Configuración de tipos y efectividad
@@ -30,9 +31,21 @@ const EFECTIVIDAD = {
 };
 
 const PUCHAMONES = {
-  Charmander: { nombre: 'Charmander', tipo: TIPOS.FUEGO },
-  Squirtle: { nombre: 'Squirtle', tipo: TIPOS.AGUA },
-  Bulbasaur: { nombre: 'Bulbasaur', tipo: TIPOS.PLANTA }
+  Charmander: { 
+    nombre: 'Charmander', 
+    tipo: TIPOS.FUEGO,
+    imagen: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/004.png'
+  },
+  Squirtle: { 
+    nombre: 'Squirtle', 
+    tipo: TIPOS.AGUA,
+    imagen: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/007.png'
+  },
+  Bulbasaur: { 
+    nombre: 'Bulbasaur', 
+    tipo: TIPOS.PLANTA,
+    imagen: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png'
+  }
 };
 
 // Elementos del DOM
@@ -94,10 +107,16 @@ function iniciarJuego() {
 // Funciones de WebSocket
 function conectarWebSocket() {
   try {
+    // Mostrar estado de conexión intentando
+    mostrarMensajeEstado('Intentando conectar al servidor...', 'info');
+    
     ws = new WebSocket('ws://localhost:3000');
+    let intentosReconexion = 0;
+    const maxIntentosReconexion = 5;
 
     ws.onopen = () => {
       console.log('🎮 Conectado al servidor');
+      intentosReconexion = 0; // Reiniciar contador de intentos
       mostrarMensajeEstado('Conectado al servidor', 'success');
       mostrarSeccion(elementos.secciones.multiplayer);
     };
@@ -109,25 +128,30 @@ function conectarWebSocket() {
         manejarMensajeWebSocket(data);
       } catch (error) {
         console.error('Error al procesar mensaje:', error);
+        mostrarMensajeEstado('Error al procesar mensaje del servidor', 'error');
       }
     };
 
     ws.onclose = () => {
       console.log('❌ Desconectado del servidor');
-      mostrarMensajeEstado('Desconectado del servidor. Reconectando...', 'error');
-      // Intentar reconectar después de 3 segundos
-      setTimeout(conectarWebSocket, 3000);
+      
+      if (intentosReconexion < maxIntentosReconexion) {
+        intentosReconexion++;
+        const tiempoEspera = Math.min(1000 * Math.pow(2, intentosReconexion), 10000);
+        mostrarMensajeEstado(`Desconectado del servidor. Intento ${intentosReconexion}/${maxIntentosReconexion} en ${tiempoEspera/1000}s...`, 'error');
+        setTimeout(conectarWebSocket, tiempoEspera);
+      } else {
+        mostrarMensajeEstado('No se pudo conectar al servidor después de varios intentos. Por favor, recarga la página.', 'error');
+      }
     };
 
     ws.onerror = (error) => {
       console.error('Error de WebSocket:', error);
-      mostrarMensajeEstado('Error de conexión', 'error');
+      mostrarMensajeEstado('Error de conexión - Verificando conectividad...', 'error');
     };
   } catch (error) {
     console.error('Error al conectar:', error);
-    mostrarMensajeEstado('Error al conectar con el servidor', 'error');
-    // Intentar reconectar después de 3 segundos
-    setTimeout(conectarWebSocket, 3000);
+    mostrarMensajeEstado('Error al iniciar la conexión con el servidor', 'error');
   }
 }
 
@@ -139,6 +163,7 @@ function manejarMensajeWebSocket(data) {
       console.log('Sala creada:', data.salaId);
       ESTADO_JUEGO.salaId = data.salaId;
       ESTADO_JUEGO.jugador.id = data.jugadorId;
+      ESTADO_JUEGO.miTurno = true; // El creador de la sala empieza
       mostrarInfoSala(data.salaId);
       mostrarMensajeEstado('Sala creada. Esperando rival...', 'success');
       break;
@@ -147,6 +172,7 @@ function manejarMensajeWebSocket(data) {
       console.log('Unido a sala:', data.salaId);
       ESTADO_JUEGO.salaId = data.salaId;
       ESTADO_JUEGO.jugador.id = data.jugadorId;
+      ESTADO_JUEGO.miTurno = false; // El segundo jugador espera su turno
       mostrarInfoSala(data.salaId);
       mostrarMensajeEstado('¡Te has unido a la sala!', 'success');
       mostrarSeccion(elementos.secciones.seleccion);
@@ -167,6 +193,8 @@ function manejarMensajeWebSocket(data) {
 
     case 'ataque_rival':
       console.log('Ataque rival recibido:', data.ataque);
+      ESTADO_JUEGO.miTurno = true; // Ahora es nuestro turno
+      actualizarIndicadorTurno();
       procesarAtaqueRival(data.ataque);
       break;
 
@@ -269,6 +297,10 @@ function obtenerPuchamonSeleccionado() {
 // Sistema de combate
 async function realizarAtaque(tipoAtaque) {
   if (!ESTADO_JUEGO.jugador.puchamon || !ESTADO_JUEGO.rival.puchamon) return;
+  if (!ESTADO_JUEGO.miTurno) {
+    mostrarMensajeEstado('¡No es tu turno!', 'error');
+    return;
+  }
   
   deshabilitarBotonesAtaque(true);
   
@@ -287,13 +319,16 @@ async function realizarAtaque(tipoAtaque) {
     actualizarVida('rival', daño);
     agregarMensajeHistorial(mensaje, true);
     
+    ESTADO_JUEGO.miTurno = false; // Cambiar turno después de atacar
+    actualizarIndicadorTurno();
+    
     if (ESTADO_JUEGO.rival.vida <= 0) {
       finalizarCombate('¡Has ganado el combate! 🏆');
     }
   } catch (error) {
     console.error('Error durante el ataque:', error);
   } finally {
-    deshabilitarBotonesAtaque(false);
+    deshabilitarBotonesAtaque(!ESTADO_JUEGO.miTurno);
   }
 }
 
@@ -518,6 +553,51 @@ function calcularEfectividad(tipoAtaque, tipoDefensor) {
     return '(Poco efectivo... 😕)';
   }
   return '';
+}
+
+function actualizarInterfazRival() {
+  if (ESTADO_JUEGO.rival.puchamon) {
+    elementos.displays.mascotaEnemigo.textContent = ESTADO_JUEGO.rival.puchamon.nombre;
+    
+    // Actualizar sprite del rival
+    const spriteEnemigo = document.getElementById('sprite-enemigo');
+    if (spriteEnemigo) {
+      spriteEnemigo.src = ESTADO_JUEGO.rival.puchamon.imagen;
+    }
+    
+    // Actualizar barra de vida del rival
+    const barraVidaRival = document.querySelector('.vida-actual.enemigo');
+    if (barraVidaRival) {
+      barraVidaRival.style.width = `${ESTADO_JUEGO.rival.vida}%`;
+    }
+    elementos.displays.vidaRival.textContent = ESTADO_JUEGO.rival.vida;
+  }
+}
+
+function actualizarInterfazJugador() {
+  if (ESTADO_JUEGO.jugador.puchamon) {
+    elementos.displays.mascotaJugador.textContent = ESTADO_JUEGO.jugador.puchamon.nombre;
+    
+    // Actualizar sprite del jugador
+    const spriteJugador = document.getElementById('sprite-jugador');
+    if (spriteJugador) {
+      spriteJugador.src = ESTADO_JUEGO.jugador.puchamon.imagen;
+    }
+    
+    // Actualizar barra de vida del jugador
+    const barraVidaJugador = document.querySelector('.vida-actual.jugador');
+    if (barraVidaJugador) {
+      barraVidaJugador.style.width = `${ESTADO_JUEGO.jugador.vida}%`;
+    }
+    elementos.displays.vidaJugador.textContent = ESTADO_JUEGO.jugador.vida;
+  }
+}
+
+function actualizarIndicadorTurno() {
+  const mensaje = ESTADO_JUEGO.miTurno ? '¡Es tu turno!' : 'Esperando el turno del rival...';
+  const tipo = ESTADO_JUEGO.miTurno ? 'success' : 'info';
+  mostrarMensajeEstado(mensaje, tipo);
+  deshabilitarBotonesAtaque(!ESTADO_JUEGO.miTurno);
 }
 
 // Iniciar el juego cuando se carga la página

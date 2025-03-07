@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PuchaLol - Batalla de Puchamones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/assets/styles/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1 id="Titulo">PuchaLol</h1>
+    </header>
+    
+    <main>
+      <div id="estado-conexion" class="estado-info">Conectando al servidor...</div>
+
+      <section id="seleccion-sala" class="section-container">
+        <h2 class="subtitulo">Sala de Juego</h2>
+        <div class="multiplayer-options">
+          <button id="crear-sala" class="boton-principal">Crear Nueva Sala</button>
+          <div class="separator">o</div>
+          <div class="unirse-sala">
+            <input type="text" id="codigo-sala" placeholder="Ingresa el código de la sala">
+            <button id="unirse-sala" class="boton-principal">Unirse a Sala</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="seleccion-puchamon" class="section-container" style="display: none;">
+        <h2 class="subtitulo">Elige tu Puchamon</h2>
+        <div class="puchamon-options">
+          <!-- Las opciones de Puchamon se generarán dinámicamente -->
+        </div>
+      </section>
+
+      <section id="campo-batalla" class="section-container" style="display: none;">
+        <h2 class="subtitulo">¡Batalla!</h2>
+        <div class="campo-batalla">
+          <div class="puchamon-container enemigo">
+            <div class="puchamon-info">
+              <h3 id="nombre-rival">Rival</h3>
+              <div class="barra-vida">
+                <div id="vida-rival" class="vida-actual enemigo"></div>
+              </div>
+            </div>
+            <div class="puchamon-sprite enemigo">
+              <img src="" alt="Puchamon rival" id="sprite-enemigo">
+            </div>
+          </div>
+
+          <div class="puchamon-container jugador">
+            <div class="puchamon-sprite jugador">
+              <img src="" alt="Tu Puchamon" id="sprite-jugador">
+            </div>
+            <div class="puchamon-info">
+              <h3 id="nombre-jugador">Tú</h3>
+              <div class="barra-vida">
+                <div id="vida-jugador" class="vida-actual"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="controles-ataque">
+            <!-- Los botones de ataque se generarán dinámicamente -->
+          </div>
+        </div>
+
+        <div class="historial-container">
+          <h3>Historial de Batalla</h3>
+          <div id="historial-ataques" class="historial-ataques"></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="modal-resultado" class="modal-resultado">
+      <div class="modal-contenido">
+        <h2 class="modal-titulo">¡Fin de la Batalla!</h2>
+        <p id="mensaje-resultado" class="modal-mensaje"></p>
+        <button id="reiniciar-juego" class="modal-boton">Jugar de Nuevo</button>
+      </div>
+    </div>
+
+    <script type="module" src="src/components/Game.js"></script>
+  </body>
+</html>

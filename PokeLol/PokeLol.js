@@ -71,12 +71,14 @@ const elementos = {
 
 // Inicialización del juego
 function iniciarJuego() {
-  // Ocultar secciones iniciales
+  console.log('Iniciando juego...');
+  
+  // Ocultar todas las secciones excepto multiplayer
   ocultarSeccion(elementos.secciones.seleccion);
   ocultarSeccion(elementos.secciones.ataque);
   elementos.modal.contenedor.classList.remove('activo');
 
-  // Configurar eventos de multijugador
+  // Configurar eventos
   elementos.botones.crearSala.addEventListener('click', crearSala);
   elementos.botones.unirseSala.addEventListener('click', unirseSala);
   elementos.botones.seleccionar.addEventListener('click', seleccionarPuchamon);
@@ -91,63 +93,91 @@ function iniciarJuego() {
 
 // Funciones de WebSocket
 function conectarWebSocket() {
-  ws = new WebSocket('ws://localhost:3000');
+  try {
+    ws = new WebSocket('ws://localhost:3000');
 
-  ws.onopen = () => {
-    console.log('Conectado al servidor');
-  };
+    ws.onopen = () => {
+      console.log('🎮 Conectado al servidor');
+      mostrarMensajeEstado('Conectado al servidor', 'success');
+      mostrarSeccion(elementos.secciones.multiplayer);
+    };
 
-  ws.onmessage = (evento) => {
-    const data = JSON.parse(evento.data);
-    manejarMensajeWebSocket(data);
-  };
+    ws.onmessage = (evento) => {
+      try {
+        const data = JSON.parse(evento.data);
+        console.log('📨 Mensaje recibido:', data);
+        manejarMensajeWebSocket(data);
+      } catch (error) {
+        console.error('Error al procesar mensaje:', error);
+      }
+    };
 
-  ws.onclose = () => {
-    console.log('Desconectado del servidor');
-    mostrarMensajeEstado('Desconectado del servidor', 'error');
-  };
+    ws.onclose = () => {
+      console.log('❌ Desconectado del servidor');
+      mostrarMensajeEstado('Desconectado del servidor. Reconectando...', 'error');
+      // Intentar reconectar después de 3 segundos
+      setTimeout(conectarWebSocket, 3000);
+    };
 
-  ws.onerror = (error) => {
-    console.error('Error de WebSocket:', error);
-    mostrarMensajeEstado('Error de conexión', 'error');
-  };
+    ws.onerror = (error) => {
+      console.error('Error de WebSocket:', error);
+      mostrarMensajeEstado('Error de conexión', 'error');
+    };
+  } catch (error) {
+    console.error('Error al conectar:', error);
+    mostrarMensajeEstado('Error al conectar con el servidor', 'error');
+    // Intentar reconectar después de 3 segundos
+    setTimeout(conectarWebSocket, 3000);
+  }
 }
 
 function manejarMensajeWebSocket(data) {
+  console.log('Procesando mensaje:', data.tipo);
+  
   switch(data.tipo) {
     case 'sala_creada':
+      console.log('Sala creada:', data.salaId);
       ESTADO_JUEGO.salaId = data.salaId;
       ESTADO_JUEGO.jugador.id = data.jugadorId;
       mostrarInfoSala(data.salaId);
+      mostrarMensajeEstado('Sala creada. Esperando rival...', 'success');
       break;
 
     case 'unido_exitosamente':
+      console.log('Unido a sala:', data.salaId);
       ESTADO_JUEGO.salaId = data.salaId;
       ESTADO_JUEGO.jugador.id = data.jugadorId;
       mostrarInfoSala(data.salaId);
+      mostrarMensajeEstado('¡Te has unido a la sala!', 'success');
       mostrarSeccion(elementos.secciones.seleccion);
       break;
 
     case 'jugador_conectado':
-      mostrarMensajeEstado('¡Rival conectado!', 'success');
+      console.log('Rival conectado');
+      mostrarMensajeEstado('¡Rival conectado! Selecciona tu Puchamon', 'success');
       mostrarSeccion(elementos.secciones.seleccion);
       break;
 
     case 'puchamon_rival':
+      console.log('Puchamon rival seleccionado:', data.puchamon);
       ESTADO_JUEGO.rival.puchamon = PUCHAMONES[data.puchamon];
       actualizarInterfazRival();
+      mostrarSeccion(elementos.secciones.ataque);
       break;
 
     case 'ataque_rival':
+      console.log('Ataque rival recibido:', data.ataque);
       procesarAtaqueRival(data.ataque);
       break;
 
     case 'rival_desconectado':
+      console.log('Rival desconectado');
       mostrarMensajeEstado('Tu rival se ha desconectado', 'error');
       finalizarCombate('Tu rival se ha desconectado');
       break;
 
     case 'error':
+      console.log('Error recibido:', data.mensaje);
       mostrarMensajeEstado(data.mensaje, 'error');
       break;
   }
@@ -156,10 +186,12 @@ function manejarMensajeWebSocket(data) {
 // Funciones de sala
 function crearSala() {
   if (ws && ws.readyState === WebSocket.OPEN) {
+    console.log('Creando sala...');
     ws.send(JSON.stringify({
       tipo: 'crear_sala'
     }));
   } else {
+    console.error('No hay conexión con el servidor');
     mostrarMensajeEstado('Error de conexión con el servidor', 'error');
   }
 }
@@ -172,19 +204,21 @@ function unirseSala() {
   }
 
   if (ws && ws.readyState === WebSocket.OPEN) {
+    console.log('Uniéndose a sala:', codigoSala);
     ws.send(JSON.stringify({
       tipo: 'unirse_sala',
       salaId: codigoSala
     }));
   } else {
+    console.error('No hay conexión con el servidor');
     mostrarMensajeEstado('Error de conexión con el servidor', 'error');
   }
 }
 
 function mostrarInfoSala(codigoSala) {
+  console.log('Mostrando info de sala:', codigoSala);
   elementos.displays.codigoSalaDisplay.textContent = codigoSala;
   elementos.displays.salaInfo.style.display = 'block';
-  elementos.displays.estadoConexion.textContent = 'Esperando a otro jugador...';
 }
 
 // Funciones de utilidad
